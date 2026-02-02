@@ -418,15 +418,28 @@ function closePopup() {
 
 function acceptValentine() {
   let score = 0;
-  for(let i=1;i<=10;i++){
+  for (let i = 1; i <= 10; i++) {
     const ans = document.querySelector(`input[name="q${i}"]:checked`);
-    if(ans) score += parseInt(ans.value);
+    if (ans) score += parseInt(ans.value);
   }
+
   document.getElementById('valentineSection').style.display = 'none';
-  document.getElementById('finalMessage').style.display = 'block';
+  const finalMessage = document.getElementById('finalMessage');
+  finalMessage.style.display = 'block';
 
   const quizScore = document.getElementById('quizScore');
-  quizScore.innerHTML = `You scored ${score}/10 💖<br>${score === 10 ? 'Perfect! You know us so well 😍' : score >= 5 ? 'Pretty good! 💕' : 'No worries… still my Valentine ❤️'}`;
+  quizScore.innerHTML = `You scored ${score}/10 💖<br>
+    ${score === 10 
+      ? 'Perfect! You know us so well 😍' 
+      : score >= 5 
+      ? 'Pretty good! 💕' 
+      : 'No worries… still my Valentine ❤️'}`;
+
+  // 🌸 Smooth scroll to the letter
+  finalMessage.scrollIntoView({
+    behavior: 'smooth',
+    block: 'start'
+  });
 }
 const heartEmojis = ["❤️", "💖", "💕", "💘", "💝"];
 
