@@ -39,6 +39,43 @@
       box-shadow: 0 6px 20px rgba(0,0,0,0.3);
     }
 
+    /* Falling hearts background */
+    .falling-hearts {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart-fall {
+      position: absolute;
+      top: -10%;
+      font-size: 24px;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+      }
+      100% {
+        transform: translateY(120vh) rotate(360deg);
+      }
+    }
+
+    /* Make sure content stays above hearts */
+    body > * {
+      position: relative;
+      z-index: 1;
+    }
+
     section {
       padding: 4rem 1.5rem;
       max-width: 900px;
@@ -123,6 +160,30 @@
       animation: popIn 0.3s ease;
     }
 
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+    }
+
+    .popup-box {
+      background: white;
+      padding: 2rem 2.5rem;
+      border-radius: 25px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      animation: popIn 0.3s ease;
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
     .popup-box h3 {
       color: #ff4b5c;
       font-size: 1.8rem;
@@ -169,6 +230,7 @@
   </style>
 </head>
 <body>
+<div class="falling-hearts" id="fallingHearts"></div>
 
 <header>
   <h1>Happy Valentine’s Day, My Love 💕</h1>
@@ -180,47 +242,98 @@
   <h2>Love Quiz 💘</h2>
   <div class="letter">
     <form id="quizForm">
+
       <div class="quiz-step active" data-step="1">
         <h3>Question 1</h3>
-        <p>Where did we first meet?</p>
-        <label><input type="radio" name="q1" value="1"> Vedio Call 🎥</label>
-        <label><input type="radio" name="q1" value="0"> Near My Hostel 🏘</label>
-        <label><input type="radio" name="q1" value="0"> Pennukanal 🫣</label>
+        <p>Do you remember the date you messaged me for the first time?</p>
+        <label><input type="radio" name="q1" value="0"> August 29 ☺️</label>
+        <label><input type="radio" name="q1" value="0"> August 30 😇</label>
+        <label><input type="radio" name="q1" value="1"> August 31 😅</label>
         <button type="button" class="surprise-btn" onclick="nextStep(1)">Next</button>
       </div>
+
       <div class="quiz-step" data-step="2">
         <h3>Question 2</h3>
-        <p>What is the gift that you bought on first meet?</p>
-        <label><input type="radio" name="q2" value="1"> Flower bouquet 💐</label>
-        <label><input type="radio" name="q2" value="0"> Unni Kannan 👶🏻</label>
-        <label><input type="radio" name="q2" value="0"> Chocolate 🍫</label>
+        <p>Where did we first meet?</p>
+        <label><input type="radio" name="q2" value="1"> Vedio Call 🎥</label>
+        <label><input type="radio" name="q2" value="0"> Near My Hostel 🏘</label>
+        <label><input type="radio" name="q2" value="0"> Pennukanal 🫣</label>
         <button type="button" class="surprise-btn" onclick="nextStep(2)">Next</button>
       </div>
+
       <div class="quiz-step" data-step="3">
         <h3>Question 3</h3>
-        <p>What was the first gift that I gave you?</p>
-        <label><input type="radio" name="q3" value="0"> Letter 📃</label>
-        <label><input type="radio" name="q3" value="1"> Kiss 😘</label>
-        <label><input type="radio" name="q3" value="0"> Chocolate 🍫</label>
+        <p>Do you remember the day we first met?</p>
+        <label><input type="radio" name="q3" value="0"> September 12 😅</label>
+        <label><input type="radio" name="q3" value="1"> September 13 😌</label>
+        <label><input type="radio" name="q3" value="0"> September 14 😉</label>
         <button type="button" class="surprise-btn" onclick="nextStep(3)">Next</button>
       </div>
+
       <div class="quiz-step" data-step="4">
         <h3>Question 4</h3>
-        <p>Where did we go first?</p>
-        <label><input type="radio" name="q4" value="0"> Paliyeli poru 🌊</label>
-        <label><input type="radio" name="q4" value="0"> Biriyani Kazhikkan 🍲</label>
-        <label><input type="radio" name="q4" value="1"> Iringol Kavu 🛕</label>
+        <p>What is the gift that you bought on first meet?</p>
+        <label><input type="radio" name="q4" value="1"> Flower bouquet 💐</label>
+        <label><input type="radio" name="q4" value="0"> Unni Kannan 👶🏻</label>
+        <label><input type="radio" name="q4" value="0"> Chocolate 🍫</label>
         <button type="button" class="surprise-btn" onclick="nextStep(4)">Next</button>
       </div>
+
       <div class="quiz-step" data-step="5">
         <h3>Question 5</h3>
-        <p>Do you remember the day we first met?</p>
-        <label><input type="radio" name="q5" value="0"> September 12 1️⃣</label>
-        <label><input type="radio" name="q5" value="1"> September 13 2️⃣</label>
-        <label><input type="radio" name="q5" value="0"> September 14 3️⃣</label>
+        <p>What was the first gift that I gave you?</p>
+        <label><input type="radio" name="q5" value="0"> Chocolate 🍫</label>
+        <label><input type="radio" name="q5" value="1"> Letter 📃</label>
+        <label><input type="radio" name="q5" value="0"> Kacha mango 📍</label>
+        <button type="button" class="surprise-btn" onclick="nextStep(5)">Next</button>
+      </div>
+
+      <div class="quiz-step" data-step="6">
+        <h3>Question 6</h3>
+        <p>Do you remember the first chocolate I gifted you?</p>
+        <label><input type="radio" name="q6" value="0"> KitKat 🍫</label>
+        <label><input type="radio" name="q6" value="1"> Galaxy 🍬</label>
+        <label><input type="radio" name="q6" value="0"> Snickers 🍭</label>
+        <button type="button" class="surprise-btn" onclick="nextStep(6)">Next</button>
+      </div>
+
+      <div class="quiz-step" data-step="7">
+        <h3>Question 7</h3>
+        <p>Where did we go first?</p>
+        <label><input type="radio" name="q7" value="0"> Paliyeli poru 🌊</label>
+        <label><input type="radio" name="q7" value="0"> Biriyani 🍲</label>
+        <label><input type="radio" name="q7" value="1"> Iringol Kavu 🛕</label>
+        <button type="button" class="surprise-btn" onclick="nextStep(7)">Next</button>
+      </div>
+
+      <div class="quiz-step" data-step="8">
+        <h3>Question 8</h3>
+        <p>Our first honeymoon plan?</p>
+        <label><input type="radio" name="q8" value="1"> Lakshadweep 🌊</label>
+        <label><input type="radio" name="q8" value="0"> Varanasi 🛕</label>
+        <label><input type="radio" name="q8" value="0"> Kashmir 🪻</label>
+        <button type="button" class="surprise-btn" onclick="nextStep(8)">Next</button>
+      </div>
+
+      <div class="quiz-step" data-step="9">
+        <h3>Question 9</h3>
+        <p>Which toy do I like most?</p>
+        <label><input type="radio" name="q9" value="1"> Soft toys 🧸</label>
+        <label><input type="radio" name="q9" value="0"> Pava kutty 🪆</label>
+        <label><input type="radio" name="q9" value="0"> Car toys 🚗</label>
+        <button type="button" class="surprise-btn" onclick="nextStep(9)">Next</button>
+      </div>
+
+      <div class="quiz-step" data-step="10">
+        <h3>Question 10</h3>
+        <p>Who loves the other more?</p>
+        <label><input type="radio" name="q10" value="1"> Me 😌</label>
+        <label><input type="radio" name="q10" value="0"> You 😜</label>
         <button type="button" class="surprise-btn" onclick="finishQuiz()">Finish</button>
       </div>
+
     </form>
+
   </div>
 </section>
 
@@ -254,13 +367,40 @@
   </div>
 </div>
 
+<div id="wrongPopup" class="popup-overlay">
+  <div class="popup-box">
+    <h3>Oops! 💔</h3>
+    <p>Not this one 😅<br>But I still love you 💕</p>
+  </div>
+</div>
+
 <script>
 function nextStep(step) {
   const current = document.querySelector(`.quiz-step[data-step="${step}"]`);
+  const selected = current.querySelector('input:checked');
+
+  if (!selected) {
+    alert('Choose an answer 💕');
+    return;
+  }
+
   const next = document.querySelector(`.quiz-step[data-step="${step + 1}"]`);
-  if(!current.querySelector('input:checked')) { alert('Choose an answer 💕'); return; }
-  current.classList.remove('active');
-  next.classList.add('active');
+
+  // If wrong answer → show popup but still continue
+  if (selected.value === "0") {
+    const popup = document.getElementById('wrongPopup');
+    popup.style.display = 'flex';
+
+    setTimeout(() => {
+      popup.style.display = 'none';
+      current.classList.remove('active');
+      next.classList.add('active');
+    }, 4000); // popup visible for 1.2 seconds
+  } else {
+    // Correct answer → go immediately
+    current.classList.remove('active');
+    next.classList.add('active');
+  }
 }
 
 function finishQuiz() {
@@ -278,7 +418,7 @@ function closePopup() {
 
 function acceptValentine() {
   let score = 0;
-  for(let i=1;i<=5;i++){
+  for(let i=1;i<=10;i++){
     const ans = document.querySelector(`input[name="q${i}"]:checked`);
     if(ans) score += parseInt(ans.value);
   }
@@ -286,8 +426,27 @@ function acceptValentine() {
   document.getElementById('finalMessage').style.display = 'block';
 
   const quizScore = document.getElementById('quizScore');
-  quizScore.innerHTML = `You scored ${score}/5 💖<br>${score === 5 ? 'Perfect! You know us so well 😍' : score >= 3 ? 'Pretty good! 💕' : 'No worries… still my Valentine ❤️'}`;
+  quizScore.innerHTML = `You scored ${score}/10 💖<br>${score === 10 ? 'Perfect! You know us so well 😍' : score >= 5 ? 'Pretty good! 💕' : 'No worries… still my Valentine ❤️'}`;
 }
+const heartEmojis = ["❤️", "💖", "💕", "💘", "💝"];
+
+function createHeart() {
+  const heart = document.createElement("span");
+  heart.className = "heart-fall";
+  heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = Math.random() * 20 + 16 + "px";
+  heart.style.animationDuration = Math.random() * 5 + 5 + "s";
+
+  document.getElementById("fallingHearts").appendChild(heart);
+
+  setTimeout(() => {
+    heart.remove();
+  }, 10000);
+}
+
+setInterval(createHeart, 400);
 </script>
 
 </body>
