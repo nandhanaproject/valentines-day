@@ -435,11 +435,8 @@ function acceptValentine() {
       ? 'Pretty good! 💕' 
       : 'No worries… still my Valentine ❤️'}`;
 
-  // 🌸 Smooth scroll to the letter
-  finalMessage.scrollIntoView({
-    behavior: 'smooth',
-    block: 'start'
-  });
+  const letter = finalMessage.querySelector('.letter-card');
+  slowScrollTo(letter, 2200); // 2.2 seconds 💕
 }
 const heartEmojis = ["❤️", "💖", "💕", "💘", "💝"];
 
@@ -458,7 +455,32 @@ function createHeart() {
     heart.remove();
   }, 10000);
 }
+  
+  function slowScrollTo(element, duration = 1800) {
+  const targetY = element.getBoundingClientRect().top + window.pageYOffset;
+  const startY = window.pageYOffset;
+  const distance = targetY - startY;
+  let startTime = null;
 
+  function animation(currentTime) {
+    if (!startTime) startTime = currentTime;
+    const timeElapsed = currentTime - startTime;
+    const progress = Math.min(timeElapsed / duration, 1);
+
+    // ease-in-out (soft romantic movement 💕)
+    const ease = progress < 0.5
+      ? 2 * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+
+    window.scrollTo(0, startY + distance * ease);
+
+    if (timeElapsed < duration) {
+      requestAnimationFrame(animation);
+    }
+  }
+
+  requestAnimationFrame(animation);
+}
 setInterval(createHeart, 400);
 </script>
 
